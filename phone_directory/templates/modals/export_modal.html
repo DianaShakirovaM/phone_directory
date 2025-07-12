@@ -1,0 +1,45 @@
+<div id="exportModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Экспорт данных</h5>
+      <span class="close" onclick="document.getElementById('exportModal').style.display='none'">&times;</span>
+    </div>
+    <form id="exportForm" method="get" action="{% url 'directory:export_data' %}">
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Выберите поля для экспорта:</label>
+          <div class="export-fields">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="exportName" name="fields" value="name" checked>
+              <label class="form-check-label" for="exportName">ФИО/Название</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="exportPosition" name="fields" value="position" checked>
+              <label class="form-check-label" for="exportPosition">Должность</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="exportDepartment" name="fields" value="department" checked>
+              <label class="form-check-label" for="exportDepartment">Подразделение</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="exportPhone" name="fields" value="phone" checked>
+              <label class="form-check-label" for="exportPhone">Телефон</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="exportRoom" name="fields" value="room" checked>
+              <label class="form-check-label" for="exportRoom">Кабинет</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="exportEmail" name="fields" value="email">
+              <label class="form-check-label" for="exportEmail">Email</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('exportModal').style.display='none'">Закрыть</button>
+        <button type="submit" class="btn btn-primary">Экспортировать</button>
+      </div>
+    </form>
+  </div>
+</div>

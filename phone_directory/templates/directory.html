@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Телефонный справочник{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'styles/tel_style.css' %}">{% endblock %}
+{% block scripts %}<script src="{% static 'js/tel.js' %}"></script>{% endblock %}
+
+{% block main_top %}
+  <div class="main_top">
+    <br>
+    <h1>ТЕЛЕФОННЫЙ СПРАВОЧНИК</h1>
+      <br><br><br>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="phone-directory-container">
+    <h2 class="directory-header">Телефонный справочник</h2>
+    <div class="notification-container" id="notificationContainer"></div>
+    <div class="directory-tools">
+      <form method="get" action="{% url 'directory:phone_directory' %}" class="search-filter">
+        <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск по ФИО, должности, телефону..." class="form-control">
+        <select name="department" class="form-control">
+          <option value="">Все подразделения</option>
+          {% for department in departments %}
+          <option value="{{ department }}" {% if selected_department == department %}selected{% endif %}>{{ department }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-search"></i> Найти
+        </button>
+      </form>
+      <div class="admin-tools">
+        <button class="btn btn-secondary" onclick="document.getElementById('importModal').style.display='block'">
+          <i class="fas fa-file-import"></i> Импорт
+        </button>
+        <button class="btn btn-secondary" onclick="document.getElementById('exportModal').style.display='block'">
+          <i class="fas fa-file-export"></i> Экспорт
+        </button>
+        <button class="btn btn-primary" onclick="document.getElementById('contactModal').style.display='block'; document.getElementById('employeeId').value=''; document.getElementById('modalTitle').textContent='Добавить контакт'; document.getElementById('contactForm').reset();">
+          <i class="fas fa-user-plus"></i> Добавить
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="phone-directory" id="directoryTable">
+        <thead>
+          <tr>
+            <th>ФИО/Организация</th>
+            <th>Должность</th>
+            <th>Подразделение</th>
+            <th>Телефон</th>
+            <th>Кабинет</th>
+            <th>Email</th>
+            <th class="actions">Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if employees %}
+            {% regroup employees by department as department_list %}
+            {% for department in department_list %}
+              <tr class="department-row">
+                <td colspan="7">{{ department.grouper|default:"Без подразделения" }}</td>
+              </tr>
+              {% for employee in department.list %}
+              <tr>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.position|default_if_none:"" }}</td>
+                <td>{{ employee.department|default_if_none:"" }}</td>
+                <td>
+                  {% if employee.phone %}
+                  <a href="tel:{{ employee.phone }}" style="color: #237068; text-decoration: none;">
+                    <i class="fas fa-phone" style="margin-right: 5px;"></i>{{ employee.phone }}
+                  </a>
+                  {% endif %}
+                </td>
+                <td>{{ employee.room|default_if_none:"" }}</td>
+                <td>
+                  {% if employee.email %}
+                  <a href="mailto:{{ employee.email }}" style="color: #237068; text-decoration: none;">
+                    <i class="fas fa-envelope" style="margin-right: 5px;"></i>{{ employee.email }}
+                  </a>
+                  {% endif %}
+                </td>
+                <td class="actions">
+                  <button class="btn btn-sm btn-warning" onclick="
+                    document.getElementById('contactModal').style.display='block';
+                    document.getElementById('modalTitle').textContent='Редактировать контакт';
+                    document.getElementById('employeeId').value='{{ employee.id }}';
+                    document.getElementById('name').value='{{ employee.name }}';
+                    document.getElementById('phone').value='{{ employee.phone }}';
+                    document.getElementById('position').value='{{ employee.position|default_if_none:"" }}';
+                    document.getElementById('room').value='{{ employee.room|default_if_none:"" }}';
+                    document.getElementById('email').value='{{ employee.email|default_if_none:"" }}';
+                    document.getElementById('department').value='{{ employee.department|default_if_none:"" }}';">
+                    <i class="fas fa-edit"></i> Ред.
+                  </button>
+                  <form method="post" action="{% url 'directory:delete_employee' employee.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этот контакт?');">
+                      <i class="fas fa-trash"></i> Удал.
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="7" class="no-results">
+                <i class="fas fa-info-circle" style="margin-right: 8px;"></i>Нет данных для отображения
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% include 'modals/create_edit_modal.html' %}
+  {% include 'modals/import_modal.html' %}
+  {% include 'modals/export_modal.html' %}
+{% endblock %}

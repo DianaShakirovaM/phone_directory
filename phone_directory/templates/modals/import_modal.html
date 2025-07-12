@@ -1,0 +1,35 @@
+{% load static %}
+<div id="importModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Импорт данных</h5>
+      <span class="close" onclick="document.getElementById('importModal').style.display='none'">&times;</span>
+    </div>
+    <form id="importForm" method="post" action="{% url 'directory:import_data' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="importFile">CSV файл*</label>
+          <div class="file-upload">
+            <input type="file" class="form-control-file" id="importFile" name="file" accept=".csv" required>
+          </div>
+          <small class="form-text text-muted">
+            <a href="{% static 'files/phone_directory_template.csv' %}" download style="color: #237068; text-decoration: none;">
+              <i class="fas fa-download" style="margin-right: 5px;"></i>Скачать шаблон
+            </a>
+          </small>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="updateExisting" name="update_existing">
+          <label class="form-check-label" for="updateExisting">
+            Обновить существующие записи
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('importModal').style.display='none'">Закрыть</button>
+        <button type="submit" class="btn btn-primary">Импортировать</button>
+      </div>
+    </form>
+  </div>
+</div>

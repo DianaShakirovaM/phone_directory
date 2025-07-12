@@ -1,0 +1,12 @@
+@font-face {
+	font-family: 'Roboto Flex';
+	src: url('RobotoFlex-Regular.woff2') format('woff2') url('RobotoFlex-Regular.woff') format('woff');
+	font-weight: 1;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Roboto Flex';
+	src: url('RobotoFlex-Regular.woff2') format('woff2') url('RobotoFlex-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}

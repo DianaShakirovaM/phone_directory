@@ -1,0 +1,12 @@
+RewriteEngine on
+# если заголовок HTTP_REFERER не пуст
+RewriteCond %{HTTP_REFERER} !^$
+
+# если зашли на сайт, и HTTP_REFERER не равен текущему сайту
+[code]RewriteCond %{HTTP_REFERER} !^http://(www.)?href\.kz/.*$ [NC]
+
+# если зашли не со страницы myfile.html из любого домена
+RewriteCond %{HTTP_REFERER} !.*/myfile\.html$
+
+# запрет действует для файлов с расширениями
+RewriteRule .(jpg|gif|png|pdf)$ - [F]

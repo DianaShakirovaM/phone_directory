@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ИНИОН РАН{% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}{% endblock %}">
+    <script type="text/javascript" src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'styles/g_style_01.css' %}" type="text/css">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    {% block extra_css %}{% endblock %}
+    {% block scripts %}{% endblock %}
+  </head>
+  <body>
+    <div id="container">
+      {% include 'includes/header.html' %}
+      <div id="top">
+        <div class="clear"></div>
+        {% include 'includes/navigation.html' %}
+      </div>
+      <div class="clear"></div>
+      {% block main_top %}{% endblock %}
+      <div id="content">
+        <div id="center">
+          <div class="main">
+            {% block content %}{% endblock %}
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div id="scroll_top"></div>
+      </div>
+      {% include 'includes/footer.html' %}
+      {% block modals %}{% endblock %}
+    </div>
+  </body>
+</html>
