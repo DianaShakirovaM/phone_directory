@@ -22,7 +22,7 @@ Frontend:
 --- 
 # Установка и запуск
 Клонировать репозиторий:
-'''bash
+```bash
 git clone https://github.com/DianaShakirovaM/phone_directory.git
 cd phone-directory
 ```
